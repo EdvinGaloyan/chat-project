@@ -24,7 +24,7 @@
       *ngFor="
         let conversation of !searchText ? conversations : filteredConversations
       "
-      (click)="conversationClicked.emit(conversation)"
+      (click)="onUserClick(conversation)"
     >
       <div class="picture">
         <img src="../../assets/images/noPic.svg" />

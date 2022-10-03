@@ -13,17 +13,20 @@ import {Router} from "@angular/router";
 export class SidebarComponent implements OnDestroy, OnInit {
 
   @Output() conversationClicked: EventEmitter<any> = new EventEmitter();
+  @Output() userIdSelected: EventEmitter<any> = new EventEmitter();
 
   public searchText: string;
   private $destroySubject = new Subject<string>()
   public conversations;
   public isLogoutWindowOpen: boolean;
+  private userId
 
   constructor(private communicationService: CommunicationService,
               private dataService: DataService,
               private route: Router) {
 
     this.communicationService.subject.pipe(takeUntil(this.$destroySubject)).subscribe(userId => {
+      this.userId = userId;
       this.getChatUsers(userId);
     });
   }
@@ -60,5 +63,10 @@ export class SidebarComponent implements OnDestroy, OnInit {
   ngOnDestroy(): void {
     this.$destroySubject.complete();
     this.$destroySubject.unsubscribe();
+  }
+
+  public onUserClick(conversation) {
+    this.conversationClicked.emit(conversation);
+    this.userIdSelected.emit(this.userId);
   }
 }

@@ -9,8 +9,13 @@ import {Conversation} from "../models/conversation";
 export class MainComponent {
 
   public conversation:Conversation;
+  public userId:number
 
-  public onConversationSelected(conversation:any){
+  public onConversationSelected(conversation:Conversation){
     this.conversation = conversation;
+  }
+
+  public onUserIdSelected(userId: number) {
+    this.userId=userId;
   }
 }

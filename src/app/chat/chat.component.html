@@ -9,7 +9,7 @@
     <div
       class="message"
       [ngClass]="{ me: message.me }"
-      *ngFor="let message of conversation.messages"
+      *ngFor="let message of messages"
     >
       <div class="messageContent">
         {{ message.body }}

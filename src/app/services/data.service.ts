@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {Message} from "../models/message";
 
 @Injectable({
   providedIn: 'root'
@@ -70,5 +71,14 @@ export class DataService {
 
   public getChatUsers(userId) {
     return this.conversations.filter(user => user.id != userId);
+  }
+
+  public setMessage(message: Message, id: number) {
+    this.conversations.forEach(user => {
+      if (user.id === id) {
+        user.messages.unshift(message);
+        user.latestMessage = message.body
+      }
+    });
   }
 }
