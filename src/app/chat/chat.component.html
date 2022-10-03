@@ -1,0 +1,31 @@
+<div id="container">
+  <div id="header">
+    <div class="avatarSection">
+      <div class="nameSection">{{conversation['firstName'] + ' ' +conversation['lastName']}}</div>
+    </div>
+
+  </div>
+  <div id="body">
+    <div
+      class="message"
+      [ngClass]="{ me: message.me }"
+      *ngFor="let message of conversation.messages"
+    >
+      <div class="messageContent">
+        {{ message.body }}
+        <div class="date">{{ message.date }}</div>
+      </div>
+    </div>
+  </div>
+  <div id="footer">
+    <div id="textarea">
+      <textarea
+        [(ngModel)]="message"
+        (keyup.enter)="submitMessage($event)"
+      ></textarea>
+    </div>
+    <div id="micIcon">
+      <img src="../../assets/images/voiceIcon.svg" />
+    </div>
+  </div>
+</div>

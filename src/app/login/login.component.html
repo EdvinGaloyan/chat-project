@@ -1,0 +1,34 @@
+<div class="wrapper">
+  <div class="inner-warpper text-center">
+    <h2 class="title">Sing In</h2>
+    <form action="" id="formvalidate" [formGroup]="form" (submit)="onSubmit()">
+      <div class="input-group">
+        <label for="firstName"></label>
+        <input formControlName="firstName" id="firstName" type="text"
+               class="form-control"
+               placeholder="First Name*" class="form-control">
+        <span class="lighting"></span>
+      </div>
+      <div class="input-group">
+        <label for="lastName"></label>
+        <input class="form-control" formControlName="lastName" name="userPassword" id="lastName" type="text"
+               placeholder="Last Name*"/>
+        <span class="lighting"></span>
+      </div>
+      <button type="submit" id="login" (submit)="onSubmit()">Sing In</button>
+      <div class="clearfix supporter">
+        <div class="pull-left remember-me">
+          <input id="rememberMe" type="checkbox">
+          <label for="rememberMe">Remember Me</label>
+        </div>
+      </div>
+      <ng-container>
+        <label class="validation-message">{{validationMessage}}</label>
+      </ng-container>
+    </form>
+  </div>
+  <div class="signup-wrapper text-center">
+    <a href="#">Don't have an account? <span class="text-primary">Create One</span></a>
+  </div>
+</div>
+

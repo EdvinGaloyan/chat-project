@@ -1,0 +1,43 @@
+<div id="sidebar">
+  <div id="row1">
+    <div id="sidebarHeader">
+      <div class="avatarContainer">
+        <img (click)="logout()" src="../../assets/images/noPic.svg" />
+      </div>
+      <div *ngIf="isLogoutWindowOpen">
+        <a [routerLink]="['/login']"><span>Logout</span></a>
+      </div>
+    </div>
+    <div id="searchBox">
+      <img width="19" src="../../assets/images/searchIcon.svg" />
+      <input
+        [(ngModel)]="searchText"
+        type="text"
+        placeholder="Search or start the new chat"
+      />
+    </div>
+  </div>
+
+  <div id="sidebarContent">
+    <div
+      class="conversation"
+      *ngFor="
+        let conversation of !searchText ? conversations : filteredConversations
+      "
+      (click)="conversationClicked.emit(conversation)"
+    >
+      <div class="picture">
+        <img src="../../assets/images/noPic.svg" />
+      </div>
+      <div class="content">
+        <div class="conversationHeader">
+          <div class="name">{{ conversation['firstName'] + ' ' +conversation['lastName']}}</div>
+          <div class="date">{{ conversation.date }}</div>
+        </div>
+        <div class="message">
+          {{ conversation['latestMessage'] }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
