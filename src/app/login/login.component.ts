@@ -1,4 +1,4 @@
-import {Component, OnChanges, SimpleChanges} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {DataService} from "../services/data.service";
@@ -9,7 +9,8 @@ import {CommunicationService} from "../services/communication.service";
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
-export class LoginComponent implements OnChanges {
+
+export class LoginComponent implements OnInit {
 
   public validationMessage: string;
 
@@ -23,8 +24,9 @@ export class LoginComponent implements OnChanges {
               private communicationService: CommunicationService) {
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('changed')
+  ngOnInit(): void {
+    const data = localStorage.getItem('data');
+    data || this.dataService.setUsersToLocalStorage();
   }
 
   onSubmit() {

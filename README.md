@@ -27,4 +27,18 @@ Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To u
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
 
 ## Run Project
-For run this application please use Node: 16.14.2
+For run this application please use Node: 16.14.2 version
+
+## Application Data
+First time, when you are running the application, application takes data from data service and stores in Local Storage,
+after it, application uses data form Local Storage.
+
+After 'Log In' process you can start 'Log out' process clicking on the 'User' picture on the left side.
+Afterwards, the 'Log out' button will be available
+
+##In Application Used
+For transfer data 2 child components used 'EventEmitter'
+
+For transfer data 2 components used service 'CommunicationService'
+
+For 'Login' page style used material styles

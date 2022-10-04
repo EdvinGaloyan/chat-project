@@ -1,10 +1,9 @@
 import {Message} from "./message";
 
-export interface Conversation {
+export interface User {
   id: number
   firstName: string
   lastname: string,
   date: string
-  latestMessage: string
   messages: Message[];
 }

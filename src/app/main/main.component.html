@@ -4,8 +4,8 @@
     (userIdSelected)="onUserIdSelected($event)"
   ></app-sidebar>
   <div id="chat">
-    <app-chat [conversation]="conversation"
+    <app-chat [user]="user"
               [userId]="userId"
-              *ngIf="conversation"></app-chat>
+              *ngIf="user"></app-chat>
   </div>
 </div>

@@ -1,84 +1,88 @@
 import {Injectable} from '@angular/core';
 import {Message} from "../models/message";
+import {User} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  private conversations = [
+  private users = [
     {
       id: 6,
       firstName: 'Natali',
       lastName: 'Portman',
-      date: new Date("09/01/2022").toDateString(),
-      latestMessage: 'Hi!!',
+      date: new Date("09/01/2022"),
       messages: [],
     },
     {
       id: 1,
       firstName: 'Anthony',
       lastName: 'Hopkins',
-      date: new Date("09/02/2022").toDateString(),
-      latestMessage: 'Hello',
+      date: new Date("09/02/2022"),
       messages: [],
     },
     {
       id: 2,
       firstName: 'Oscar',
       lastName: 'Wilde',
-      date: new Date("08/28/2021").toDateString(),
-      latestMessage: 'Greetings',
+      date: new Date("08/28/2021"),
       messages: [],
     },
     {
       id: 3,
       firstName: 'Andrew',
       lastName: 'Carnegie',
-      date: new Date("01/09/1902").toDateString(),
-      latestMessage: 'Maybe!!',
+      date: new Date("01/09/1902"),
       messages: [],
     },
     {
       id: 3,
       firstName: 'Nikola',
       lastName: 'Tesla',
-      date: new Date("01/05/1894").toDateString(),
-      latestMessage: 'Please change contract',
+      date: new Date("01/05/1894"),
       messages: [],
     },
     {
       id: 4,
       firstName: 'Tomas',
       lastName: 'Jeferson',
-      date: new Date("01/09/2022").toDateString(),
-      latestMessage: "Goodbye",
+      date: new Date("01/09/2022"),
       messages: [],
     },
     {
       id: 5,
       firstName: 'Tom',
       lastName: 'Hardy',
-      date: new Date("03/31/2022").toDateString(),
-      latestMessage: 'Congratulations',
+      date: new Date("03/31/2022"),
       messages: [],
     },
   ];
 
   public getUserByFirstAndLastName(firstName: string, lastName: string) {
-    return this.conversations.find(user => user.firstName === firstName && user.lastName === lastName);
+    this.users = JSON.parse(localStorage.getItem('data'));
+    return this.users.find(user => user.firstName === firstName && user.lastName === lastName);
   }
 
   public getChatUsers(userId) {
-    return this.conversations.filter(user => user.id != userId);
+    const data = localStorage.getItem('data')
+    return JSON.parse(data).filter(user => user.id != userId);
   }
 
   public setMessage(message: Message, id: number) {
-    this.conversations.forEach(user => {
+    this.users.forEach(user => {
       if (user.id === id) {
         user.messages.unshift(message);
-        user.latestMessage = message.body
       }
     });
+    localStorage.setItem('data', JSON.stringify(this.users));
+  }
+
+  public setUsersToLocalStorage() {
+    localStorage.setItem('data', JSON.stringify(this.users));
+  }
+
+  public getUserById(userId: number): User {
+    return JSON.parse(localStorage.getItem('data')).find(user => user.id === userId);
   }
 }

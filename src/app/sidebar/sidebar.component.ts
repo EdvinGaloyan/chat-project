@@ -2,7 +2,7 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
 import {CommunicationService} from "../services/communication.service";
 import {Subject, takeUntil} from "rxjs";
 import {DataService} from "../services/data.service";
-import {Conversation} from "../models/conversation";
+import {User} from "../models/user";
 import {Router} from "@angular/router";
 
 @Component({
@@ -16,15 +16,15 @@ export class SidebarComponent implements OnDestroy, OnInit {
   @Output() userIdSelected: EventEmitter<any> = new EventEmitter();
 
   public searchText: string;
-  private $destroySubject = new Subject<string>()
-  public conversations;
+  private $destroySubject: Subject<boolean>;
+  public users;
   public isLogoutWindowOpen: boolean;
-  private userId
+  private userId;
 
   constructor(private communicationService: CommunicationService,
               private dataService: DataService,
               private route: Router) {
-
+    this.$destroySubject = new Subject<boolean>();
     this.communicationService.subject.pipe(takeUntil(this.$destroySubject)).subscribe(userId => {
       this.userId = userId;
       this.getChatUsers(userId);
@@ -32,24 +32,20 @@ export class SidebarComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.conversations || this.route.navigate(['/login']);
-
+    this.users || this.route.navigate(['/login']);
   }
 
   private getChatUsers(userId): void {
-    this.conversations = this.dataService.getChatUsers(userId);
+    this.users = this.dataService.getChatUsers(userId);
   }
 
-  get filteredConversations(): Conversation[] {
-    return this.conversations.filter((conversation) => {
+  get filteredConversations(): User[] {
+    return this.users.filter((user) => {
       return (
-        conversation.firstName
+        user.firstName
           .toLowerCase()
           .includes(this.searchText.toLowerCase()) ||
-        conversation.latestMessage
-          .toLowerCase()
-          .includes(this.searchText.toLowerCase())
-        || conversation.lastName
+        user.lastName
           .toLowerCase()
           .includes(this.searchText.toLowerCase())
       );
@@ -60,13 +56,13 @@ export class SidebarComponent implements OnDestroy, OnInit {
     this.isLogoutWindowOpen = !this.isLogoutWindowOpen;
   }
 
-  ngOnDestroy(): void {
-    this.$destroySubject.complete();
-    this.$destroySubject.unsubscribe();
+  public onUserClick(user) {
+    this.conversationClicked.emit(user);
+    this.userIdSelected.emit(this.userId);
   }
 
-  public onUserClick(conversation) {
-    this.conversationClicked.emit(conversation);
-    this.userIdSelected.emit(this.userId);
+  ngOnDestroy(): void {
+    this.$destroySubject.next(true);
+    this.$destroySubject.complete();
   }
 }

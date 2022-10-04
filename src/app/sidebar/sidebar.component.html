@@ -22,20 +22,17 @@
     <div
       class="conversation"
       *ngFor="
-        let conversation of !searchText ? conversations : filteredConversations
+        let user of !searchText ? users : filteredConversations
       "
-      (click)="onUserClick(conversation)"
+      (click)="onUserClick(user)"
     >
       <div class="picture">
         <img src="../../assets/images/noPic.svg" />
       </div>
       <div class="content">
         <div class="conversationHeader">
-          <div class="name">{{ conversation['firstName'] + ' ' +conversation['lastName']}}</div>
-          <div class="date">{{ conversation.date }}</div>
-        </div>
-        <div class="message">
-          {{ conversation['latestMessage'] }}
+          <div class="name">{{ user['firstName'] + ' ' +user['lastName']}}</div>
+          <div class="date">{{ user.date | date: 'dd/MM/yyyy'}}</div>
         </div>
       </div>
     </div>
