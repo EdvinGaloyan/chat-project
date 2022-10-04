@@ -20,6 +20,7 @@ export class SidebarComponent implements OnDestroy, OnInit {
   public users;
   public isLogoutWindowOpen: boolean;
   private userId;
+  public userName;
 
   constructor(private communicationService: CommunicationService,
               private dataService: DataService,
@@ -33,6 +34,7 @@ export class SidebarComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.users || this.route.navigate(['/login']);
+    this.userName = this.dataService.getUserById(this.userId).firstName;
   }
 
   private getChatUsers(userId): void {
