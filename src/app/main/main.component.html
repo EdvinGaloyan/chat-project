@@ -1,11 +1,11 @@
 <div id="chatContainer">
   <app-sidebar
-    (conversationClicked)="onConversationSelected($event)"
-    (userIdSelected)="onUserIdSelected($event)"
+    (conversationClicked)="onConversationClicked($event)"
+    (entityIdSelected)="onEntityIdSelected($event)"
   ></app-sidebar>
   <div id="chat">
-    <app-chat [user]="user"
-              [userId]="userId"
-              *ngIf="user"></app-chat>
+    <app-chat [entity]="entity"
+              [entityId]="entityId"
+              *ngIf="entity"></app-chat>
   </div>
 </div>

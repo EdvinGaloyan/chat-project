@@ -27,7 +27,7 @@
       *ngFor="
         let user of !searchText ? users : filteredConversations
       "
-      (click)="onUserClick(user)"
+      (click)="onConversationClick(user)"
     >
       <div class="picture">
         <img src="../../assets/images/noPic.svg" />
@@ -36,6 +36,23 @@
         <div class="conversationHeader">
           <div class="name">{{ user['firstName'] + ' ' +user['lastName']}}</div>
           <div class="date">{{ user.date | date: 'dd/MM/yyyy'}}</div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="conversation"
+      *ngFor="
+        let channel of !searchText ? channels : filteredChannels
+      "
+      (click)="onConversationClick(channel)"
+    >
+      <div class="picture">
+        <img src="../../assets/images/channels.jpg" />
+      </div>
+      <div class="content">
+        <div class="conversationHeader">
+          <div class="name">{{ channel['name']}}</div>
+          <div class="date">{{ channel.date | date: 'dd/MM/yyyy'}}</div>
         </div>
       </div>
     </div>

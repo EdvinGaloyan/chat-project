@@ -1,7 +1,10 @@
 <div id="container">
   <div id="header">
     <div class="avatarSection">
-      <div class="nameSection">{{user['firstName'] + ' ' + user['lastName']}}</div>
+      <div class="nameSection">{{modelType === 0 ? entity['firstName'] : entity['name']}}</div>
+    </div>
+    <div style="margin-right: 8px" *ngIf="modelType===1">
+      <span class='add-member'>Add Member</span>
     </div>
   </div>
   <div id="body">
@@ -10,13 +13,20 @@
       [ngClass]="{ me: message.me }"
       *ngFor="let message of messages"
     >
-      <div>
-        <div style="font-weight: bold">{{message.me ? senderName : user.firstName}}</div>
+      <ng-container *ngIf="modelType===0; else forChannel">
+        <div style="font-weight: bold">{{message.me ? senderName : entity.firstName}}</div>
         <div class="messageContent">
           {{ message.body }}
-          <div class="date">{{ message.date| date: 'dd/MM/yyyy'}}</div>
+          <div class="date">{{ message.date| date: 'dd/MM/yyyy hh:mm:ss'}}</div>
         </div>
-      </div>
+      </ng-container>
+      <ng-template #forChannel>
+        <div style="font-weight: bold">{{getUserNameById(message.userId)}}</div>
+        <div class="messageContent">
+          {{ message.body }}
+          <div class="date">{{ message.date| date: 'dd/MM/yyyy hh:mm:ss'}}</div>
+        </div>
+      </ng-template>
     </div>
   </div>
   <div id="footer">

@@ -1,6 +1,6 @@
 export interface Message {
-  id: number;
-  body: string,
-  date: string,
-  me: boolean;
+  userId: number;
+  body: string;
+  date: Date;
+  me?: boolean;
 }

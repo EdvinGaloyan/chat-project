@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import {ReplaySubject, Subject} from "rxjs";
+import {Injectable} from '@angular/core';
+import {BehaviorSubject, ReplaySubject, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class CommunicationService {
     return this._subject;
   }
 
-  sendMessage(message: number) {
-    this._subject.next(message);
+  public notifyOnTopic(userId: number): void {
+    this._subject.next(userId);
   }
 }

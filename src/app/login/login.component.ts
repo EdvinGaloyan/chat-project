@@ -25,11 +25,13 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const data = localStorage.getItem('data');
-    data || this.dataService.setUsersToLocalStorage();
+    const users = localStorage.getItem('users');
+    users || this.dataService.setUsersToLocalStorage();
+    const channels = localStorage.getItem('channels');
+    channels || this.dataService.setChannelsToLocalStorage();
   }
 
-  onSubmit() {
+  public onSubmit():void {
     if (this.form.invalid) {
       this.validationMessage = "First Name and Last Name are required Fields";
       return;
@@ -38,7 +40,7 @@ export class LoginComponent implements OnInit {
       const user = this.dataService.getUserByFirstAndLastName(this.form.get('firstName').value, this.form.get('lastName').value);
       if (user) {
         this.router.navigate(['/chat'])
-        this.communicationService.subject.next(user.id);
+        this.communicationService.notifyOnTopic(user.id);
       } else this.validationMessage = 'User not found';
     }
   }

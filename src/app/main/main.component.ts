@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {User} from "../models/user";
+import {Channel} from "../models/channel";
 
 @Component({
   selector: 'app-main',
@@ -8,14 +9,14 @@ import {User} from "../models/user";
 })
 export class MainComponent {
 
-  public user:User;
-  public userId:number
+  public entity: User | Channel;
+  public entityId: number;
 
-  public onConversationSelected(user:User){
-    this.user = user;
+  public onConversationClicked(entity: User | Channel): void {
+    this.entity = entity;
   }
 
-  public onUserIdSelected(userId: number) {
-    this.userId=userId;
+  public onEntityIdSelected(entityId: number): void {
+    this.entityId = entityId;
   }
 }

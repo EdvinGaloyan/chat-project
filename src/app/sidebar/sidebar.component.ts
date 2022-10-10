@@ -4,6 +4,7 @@ import {Subject, takeUntil} from "rxjs";
 import {DataService} from "../services/data.service";
 import {User} from "../models/user";
 import {Router} from "@angular/router";
+import {Channel} from "../models/channel";
 
 @Component({
   selector: 'app-sidebar',
@@ -13,28 +14,31 @@ import {Router} from "@angular/router";
 export class SidebarComponent implements OnDestroy, OnInit {
 
   @Output() conversationClicked: EventEmitter<any> = new EventEmitter();
-  @Output() userIdSelected: EventEmitter<any> = new EventEmitter();
+  @Output() entityIdSelected: EventEmitter<any> = new EventEmitter();
 
   public searchText: string;
-  private $destroySubject: Subject<boolean>;
-  public users;
+  private $destroySubject = new Subject<boolean>();
+  public users: User[];
   public isLogoutWindowOpen: boolean;
   private userId;
   public userName;
+  public channels: Channel[];
 
   constructor(private communicationService: CommunicationService,
               private dataService: DataService,
               private route: Router) {
-    this.$destroySubject = new Subject<boolean>();
     this.communicationService.subject.pipe(takeUntil(this.$destroySubject)).subscribe(userId => {
       this.userId = userId;
       this.getChatUsers(userId);
+      this.getChannelsInWhichUserIsIncluded(userId);
     });
   }
 
   ngOnInit(): void {
-    this.users || this.route.navigate(['/login']);
-    this.userName = this.dataService.getUserById(this.userId).firstName;
+    if (this.users) {
+      this.userName = this.dataService.getUserById(this.userId).firstName;
+    } else
+      this.route.navigate(['/login']);
   }
 
   private getChatUsers(userId): void {
@@ -54,17 +58,27 @@ export class SidebarComponent implements OnDestroy, OnInit {
     });
   }
 
+  get filteredChannels(): Channel[] {
+    return this.channels.filter(channel => {
+      return channel.name.toLowerCase().includes(this.searchText.toLowerCase());
+    })
+  }
+
   public logout(): void {
     this.isLogoutWindowOpen = !this.isLogoutWindowOpen;
   }
 
-  public onUserClick(user) {
-    this.conversationClicked.emit(user);
-    this.userIdSelected.emit(this.userId);
+  public onConversationClick(entity): void {
+    this.conversationClicked.emit(entity);
+    this.entityIdSelected.emit(this.userId);
   }
 
   ngOnDestroy(): void {
     this.$destroySubject.next(true);
     this.$destroySubject.complete();
+  }
+
+  private getChannelsInWhichUserIsIncluded(userId: number):void {
+    this.channels = this.dataService.getChannelsInWhichUserIsIncluded(userId);
   }
 }

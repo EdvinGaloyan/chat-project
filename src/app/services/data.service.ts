@@ -1,13 +1,45 @@
 import {Injectable} from '@angular/core';
 import {Message} from "../models/message";
 import {User} from "../models/user";
+import {Channel} from "../models/channel";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  private users = [
+
+  private channels: Channel[] = [
+    {
+      id: 9,
+      name: 'First Channel',
+      date: new Date("09/01/2022"),
+      userIds: [1, 6, 5],
+      messages: []
+    },
+    {
+      id: 10,
+      name: 'Second Channel',
+      date: new Date("08/28/2021"),
+      userIds: [2, 1, 6],
+      messages: []
+    },
+    {
+      id: 11,
+      name: 'Third Channel',
+      date: new Date("6/24/2022"),
+      userIds: [2, 1, 5],
+      messages: []
+    },
+    {
+      id: 12,
+      name: 'Fourth Channel',
+      date: new Date("09/11/2020"),
+      userIds: [3, 5, 4],
+      messages: []
+    },
+  ]
+  private users: User[] = [
     {
       id: 6,
       firstName: 'Natali',
@@ -59,14 +91,35 @@ export class DataService {
     },
   ];
 
-  public getUserByFirstAndLastName(firstName: string, lastName: string) {
-    this.users = JSON.parse(localStorage.getItem('data'));
+  public getUserByFirstAndLastName(firstName: string, lastName: string): User {
+    this.users = JSON.parse(localStorage.getItem('users'));
     return this.users.find(user => user.firstName === firstName && user.lastName === lastName);
   }
 
-  public getChatUsers(userId) {
-    const data = localStorage.getItem('data')
-    return JSON.parse(data).filter(user => user.id != userId);
+  public getChatUsers(userId: number): User[] {
+    const users = localStorage.getItem('users')
+    return JSON.parse(users).filter(user => user.id != userId);
+  }
+
+  public getChannelsInWhichUserIsIncluded(userId: number): Channel[] {
+    const channels = localStorage.getItem('channels')
+    return JSON.parse(channels).filter(channel => channel.userIds.includes(userId));
+  }
+
+  public setUsersToLocalStorage(): void {
+    localStorage.setItem('users', JSON.stringify(this.users));
+  }
+
+  public setChannelsToLocalStorage(): void {
+    localStorage.setItem('channels', JSON.stringify(this.channels));
+  }
+
+  public getUserById(userId: number): User {
+    return JSON.parse(localStorage.getItem('users')).find(user => user.id === userId);
+  }
+
+  public getChannelById(channelId: number): Channel {
+    return JSON.parse(localStorage.getItem('channels')).find(channel => channel.id === channelId);
   }
 
   public setMessage(message: Message, id: number) {
@@ -75,14 +128,15 @@ export class DataService {
         user.messages.unshift(message);
       }
     });
-    localStorage.setItem('data', JSON.stringify(this.users));
+    localStorage.setItem('users', JSON.stringify(this.users));
   }
 
-  public setUsersToLocalStorage() {
-    localStorage.setItem('data', JSON.stringify(this.users));
-  }
-
-  public getUserById(userId: number): User {
-    return JSON.parse(localStorage.getItem('data')).find(user => user.id === userId);
+  public setMessageToChannel(message: Message, id: number) {
+    this.channels.forEach(channel => {
+      if (channel.id === id) {
+        channel.messages.unshift(message);
+      }
+    })
+    localStorage.setItem('channels', JSON.stringify(this.channels));
   }
 }
